@@ -12,7 +12,6 @@ load_mnist(batch_size=128)
 
 """
 class OneConv(nn.Module):
-
     def __init__(self):
         super(OneConv, self).__init__()
 
@@ -27,7 +26,6 @@ class OneConv(nn.Module):
         return x
 
 net = OneConv()
-
 summary(net, input_size=(1,1,28,28))
 """
 
@@ -49,6 +47,7 @@ class MultiLayerCNN(nn.Module):
 
         x = x.view(-1, 320)
         x = nn.functional.log_softmax(self.fc(x), dim=1)
+        return x
 
 net = MultiLayerCNN()
 summary(net, input_size=(1,1,28,28))
