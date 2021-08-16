@@ -10,25 +10,6 @@ from pytorchcv.pytorchcv import load_mnist, train, plot_results, plot_convolutio
 
 load_mnist(batch_size=128)
 
-"""
-class OneConv(nn.Module):
-    def __init__(self):
-        super(OneConv, self).__init__()
-
-        self.conv = nn.Conv2d(in_channels=1, out_channels=9, kernel_size=(5,5))
-        self.flatten = nn.Flatten()
-        self.fc = nn.Linear(5184, 10)
-
-    def forward(self, x):
-        x = nn.functional.relu(self.conv(x))
-        x = self.flatten(x)
-        x = nn.functional.log_softmax(self.fc(x), dim=1)
-        return x
-
-net = OneConv()
-summary(net, input_size=(1,1,28,28))
-"""
-
 class MultiLayerCNN(nn.Module):
     """
     複数層NN
