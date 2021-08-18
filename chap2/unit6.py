@@ -30,3 +30,6 @@ trans = transforms.Compose([
 
 dataset = torchvision.datasets.ImageFolder("data/PetImages", transform=trans)
 trainset, testset = torch.utils.data.random_split(dataset, [20000, len(dataset) - 20000])
+
+vgg = torchvision.models.vgg16(pretrained=True)
+summary(vgg,input_size=(1,3,224,224))
