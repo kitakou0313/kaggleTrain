@@ -1,4 +1,4 @@
-import torch
+import torch.utils.data
 import torch.nn as nn
 import torchvision
 from torchvision import datasets
@@ -32,4 +32,18 @@ dataset = torchvision.datasets.ImageFolder("data/PetImages", transform=trans)
 trainset, testset = torch.utils.data.random_split(dataset, [20000, len(dataset) - 20000])
 
 vgg = torchvision.models.vgg16(pretrained=True)
-summary(vgg,input_size=(1,3,224,224))
+
+vgg.classifier = torch.nn.Linear(25088, 2)
+
+for x in vgg.features.parameters():
+    x.requires_grad = False
+
+summary(vgg, (1,3,244,244))
+
+trainset, testset = torch.utils.data.random_split(dataset, [20000, len(dataset) - 20000])
+train_loader = torch.utils.data.DataLoader(trainset, batch_size=16)
+test_loader  = torch.utils.data.DataLoader(testset, batch_size=16)
+
+train_long(vgg, train_loader, test_loader, loss_fn=nn.CrossEntropyLoss(), epochs=1, print_freq=90)
+
+torch.save(vgg,'data/cats_dogs.pth')
