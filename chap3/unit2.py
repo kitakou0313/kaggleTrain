@@ -1,6 +1,4 @@
-from typing import NewType
 import torch
-from torch._C import Node
 import torchtext
 import os
 import collections
