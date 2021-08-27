@@ -24,3 +24,14 @@ def encode(x):
     return [vocab.get_stoi()[s] for s in tokenizer(x)]
 
 print(encode('I love to play with my words'))
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+vectorizer = CountVectorizer()
+corpus = [
+    'I like hot dogs.',
+    'The dog ran fast.',
+    'Its hot outside.',
+]
+vectorizer.fit_transform(corpus)
+print(vectorizer.transform(['My dog likes hot dogs on a hot day.']).toarray())
