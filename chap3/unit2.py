@@ -35,3 +35,23 @@ corpus = [
 ]
 vectorizer.fit_transform(corpus)
 print(vectorizer.transform(['My dog likes hot dogs on a hot day.']).toarray())
+
+def to_bow(text,bow_vocab_size=vocab_size):
+    res = torch.zeros(bow_vocab_size,dtype=torch.float32)
+    for i in encode(text):
+        if i<bow_vocab_size:
+            res[i] += 1
+    return res
+
+from torch.utils.data import DataLoader
+import numpy as np 
+
+def bowify(b):
+    return (
+        torch.LongTensor([t[0]-1 for t in b]),
+        torch.stack([to_bow(t[1]) for t in b])
+    )
+
+train_loader = DataLoader(train_dataset, batch_size=16, collate_fn=bowify, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=16, collate_fn=bowify, shuffle=True)
+
