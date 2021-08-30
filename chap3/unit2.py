@@ -1,5 +1,7 @@
 import torch
+from torch import optim
 import torchtext
+from tqdm import tqdm
 import os
 import collections
 os.makedirs('./data',exist_ok=True)
@@ -54,4 +56,39 @@ def bowify(b):
 
 train_loader = DataLoader(train_dataset, batch_size=16, collate_fn=bowify, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=16, collate_fn=bowify, shuffle=True)
+
+net = torch.nn.Sequential(
+    torch.nn.Linear(vocab_size, 4),
+    torch.nn.LogSoftmax(dim=1)
+)
+
+def train_epoch(net:torch.nn.Sequential, datalodaer:DataLoader, lr=0.01,optimizer=None,loss_fn:torch.nn.NLLLoss = torch.nn.NLLLoss(),epoch_size=None, report_freq=200):
+    optimizer = torch.optim.Adam(net.parameters(),lr=lr)
+    net.train()
+    totalLoss, acc, count, i = 0,0,0,0
+
+    bar = tqdm(total = epoch_size)
+
+    for label, feature in datalodaer:
+        optimizer.zero_grad()
+        out = net(feature)
+        loss = loss_fn(out, label)
+        loss.backward()
+        optimizer.step()
+        totalLoss += loss
+        _,predicted = torch.max(out,1)
+        acc+=(predicted==label).sum()
+        count+=len(label)
+        i+=1
+        bar.update(1)
+
+        if i%report_freq==0:
+            print(f"{count}: acc={acc.item()/count}")
+        if epoch_size and count>epoch_size:
+            break
+    return totalLoss.item()/count, acc.item()/count
+
+
+train_epoch(net, train_loader, epoch_size=1500)
+        
 
