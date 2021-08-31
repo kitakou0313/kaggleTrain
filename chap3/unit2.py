@@ -91,12 +91,12 @@ def train_epoch(net:torch.nn.Sequential, datalodaer:DataLoader, lr=0.01,optimize
 
 # train_epoch(net, train_loader, epoch_size=1500)
 
-bigram_vectorizer = CountVectorizer(ngram_range=(1,2), token_pattern='\b\w+\b', min_df=1)
+bigram_vectorizer = CountVectorizer(ngram_range=(1,2), token_pattern=r'\b\w+\b', min_df=1)
 corpus = [
         'I like hot dogs.',
         'The dog ran fast.',
         'Its hot outside.',
     ]
 bigram_vectorizer.fit_transform(corpus)
-print(bigram_vectorizer.vocabulary)
+print(bigram_vectorizer.vocabulary_)
 bigram_vectorizer.transform(['My dog likes hot dogs on a hot day.']).toarray()
