@@ -35,8 +35,8 @@ corpus = [
     'The dog ran fast.',
     'Its hot outside.',
 ]
-vectorizer.fit_transform(corpus)
-print(vectorizer.transform(['My dog likes hot dogs on a hot day.']).toarray())
+#vectorizer.fit_transform(corpus)
+#print(vectorizer.transform(['My dog likes hot dogs on a hot day.']).toarray())
 
 def to_bow(text,bow_vocab_size=vocab_size):
     res = torch.zeros(bow_vocab_size,dtype=torch.float32)
@@ -89,6 +89,14 @@ def train_epoch(net:torch.nn.Sequential, datalodaer:DataLoader, lr=0.01,optimize
     return totalLoss.item()/count, acc.item()/count
 
 
-train_epoch(net, train_loader, epoch_size=1500)
-        
+# train_epoch(net, train_loader, epoch_size=1500)
 
+bigram_vectorizer = CountVectorizer(ngram_range=(1,2), token_pattern='\b\w+\b', min_df=1)
+corpus = [
+        'I like hot dogs.',
+        'The dog ran fast.',
+        'Its hot outside.',
+    ]
+bigram_vectorizer.fit_transform(corpus)
+print(bigram_vectorizer.vocabulary)
+bigram_vectorizer.transform(['My dog likes hot dogs on a hot day.']).toarray()
