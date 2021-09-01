@@ -97,6 +97,14 @@ corpus = [
         'The dog ran fast.',
         'Its hot outside.',
     ]
-bigram_vectorizer.fit_transform(corpus)
-print(bigram_vectorizer.vocabulary_)
-bigram_vectorizer.transform(['My dog likes hot dogs on a hot day.']).toarray()
+# bigram_vectorizer.fit_transform(corpus)
+# print(bigram_vectorizer.vocabulary_)
+# bigram_vectorizer.transform(['My dog likes hot dogs on a hot day.']).toarray()
+
+counter = collections.Counter()
+for (label, line) in train_dataset:
+    l = tokenizer(line)
+    counter.update(torchtext.data.utils.ngrams_iterator(l, ngrams=2))
+bi_vocab = torchtext.vocab.vocab(counter,min_freq=1)
+
+print("Bican length, num:",len(bi_vocab))
