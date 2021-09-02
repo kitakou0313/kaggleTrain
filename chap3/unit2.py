@@ -27,7 +27,7 @@ def encode(x):
 
 print(encode('I love to play with my words'))
 
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 vectorizer = CountVectorizer()
 corpus = [
@@ -108,3 +108,8 @@ for (label, line) in train_dataset:
 bi_vocab = torchtext.vocab.vocab(counter,min_freq=1)
 
 print("Bican length, num:",len(bi_vocab))
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+vectorizer = TfidfVectorizer(ngram_range=(1,2))
+vectorizer.fit_transform(corpus)
+print(vectorizer.transform(['My dog likes hot dogs on a hot day.']).toarray())
