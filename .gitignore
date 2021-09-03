@@ -1,2 +1,4 @@
 data/
 pytorchcv/
+__pycache__
+torchnlp.py
