@@ -1,6 +1,7 @@
 import torch
 import torchtext
 import numpy as np
+import torch.utils.data
 from torchnlp import *
 train_dataset, test_dataset, classes, vocab = load_dataset()
 vocab_size = len(vocab)
@@ -26,3 +27,5 @@ class EmbedClassifier(torch.nn.Module):
         x = torch.mean(x, dim=1)
 
         return self.fc(x)
+
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=16, collate_fn=padify, shuffle=True)
