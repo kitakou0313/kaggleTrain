@@ -29,3 +29,6 @@ class EmbedClassifier(torch.nn.Module):
         return self.fc(x)
 
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=16, collate_fn=padify, shuffle=True)
+
+net = EmbedClassifier(vocab_size, 32, len(classes)).to(device)
+train_epoch(net, train_loader, lr=1, epoch_size=25000)
