@@ -32,3 +32,24 @@ train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=16, collate
 
 net = EmbedClassifier(vocab_size, 32, len(classes)).to(device)
 train_epoch(net, train_loader, lr=1, epoch_size=25000)
+
+class EmbedClassifier(torch.nn.Module):
+    """
+    docstring
+    """
+    def __init__(self, vocab_size, embed_dim, num_class):
+        """
+        docstring
+        """
+        super().__init__()
+        self.embedding = torch.nn.EmbeddingBag(
+            vocab_size, embed_dim
+        )
+        self.fc = torch.nn.Linear(embed_dim, num_class)
+
+    def forward(self, text, off):
+        """
+        docstring
+        """
+        x = self.embedding(text, off)
+        return self.fc(x)
