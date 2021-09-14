@@ -24,3 +24,17 @@ def load_audio_files(path:str, label:str):
 trainset_speech_commands_yes = load_audio_files('./data/SpeechCommands/speech_commands_v0.02/yes', 'yes')
 trainset_speech_commands_no = load_audio_files('./data/SpeechCommands/speech_commands_v0.02/no', 'no')
 
+trainloader_yes = data.DataLoader(
+    trainset_speech_commands_yes,
+    batch_size=1,
+    shuffle=True,
+    num_workers=0
+)
+
+
+trainloader_no = data.DataLoader(
+    trainset_speech_commands_no,
+    batch_size=1,
+    shuffle=True,
+    num_workers=0
+)
