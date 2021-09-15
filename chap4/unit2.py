@@ -38,3 +38,24 @@ trainloader_no = data.DataLoader(
     shuffle=True,
     num_workers=0
 )
+
+def show_waveform(waveform, sample_rate, label):
+    """
+    docstring
+    """
+    print("Waveform: {}\nSample rate: {}\nLabels: {}".format(waveform, sample_rate, label))
+    new_sample_rate = sample_rate / 10
+    print(new_sample_rate)
+
+    channel = 0
+
+    waveform_transformed = torchaudio.transforms.Resample(
+        sample_rate, new_sample_rate)(waveform[channel,:].view(1,-1)
+    )
+
+yes_waveform = trainset_speech_commands_yes[0][0]
+yes_sample_rate = trainset_speech_commands_yes[0][1]
+no_waveform = trainset_speech_commands_no[0][0]
+
+show_waveform(yes_waveform, yes_sample_rate, "yes")
+    
