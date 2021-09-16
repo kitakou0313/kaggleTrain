@@ -6,6 +6,8 @@ import torchaudio
 from torch.utils.data import DataLoader, Dataset
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+
 def load_audio_files(path:str, label:str):
     dataset = []
     walker = sorted(str(p) for p in Path(path).glob(f'*.wav'))
@@ -58,4 +60,13 @@ yes_sample_rate = trainset_speech_commands_yes[0][1]
 no_waveform = trainset_speech_commands_no[0][0]
 
 show_waveform(yes_waveform, yes_sample_rate, "yes")
-    
+
+def show_spectrogram(waveform):
+    spectrogram = torchaudio.transforms.Spectrogram()(waveform)
+    #print(spectrogram)
+    print("Shape of spectrogram: {}".format(spectrogram.size()))
+
+    plt.figure()
+    plt.imsave(f'test/spectrogram_img.png', spectrogram.log2()[0,:,:].numpy(), cmap='gray')
+
+show_spectrogram(yes_waveform)    
