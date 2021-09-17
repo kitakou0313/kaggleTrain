@@ -69,4 +69,16 @@ def show_spectrogram(waveform):
     plt.figure()
     plt.imsave(f'test/spectrogram_img.png', spectrogram.log2()[0,:,:].numpy(), cmap='gray')
 
-show_spectrogram(yes_waveform)    
+show_spectrogram(yes_waveform)
+
+def show_merspectrogram(waveform, sample_rate):
+    """
+    docstring
+    """
+    mel_spectrogram = torchaudio.transforms.MelSpectrogram(
+        sample_rate
+    )(waveform)
+    plt.figure()
+    plt.imsave(f'test/spectrogram_img.png', mel_spectrogram.log2()[0,:,:].numpy(), cmap='gray')
+
+
