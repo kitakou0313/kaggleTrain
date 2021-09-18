@@ -58,6 +58,7 @@ def show_waveform(waveform, sample_rate, label):
 yes_waveform = trainset_speech_commands_yes[0][0]
 yes_sample_rate = trainset_speech_commands_yes[0][1]
 no_waveform = trainset_speech_commands_no[0][0]
+no_sample_rate = trainset_speech_commands_no[0][1]
 
 show_waveform(yes_waveform, yes_sample_rate, "yes")
 
@@ -82,3 +83,16 @@ def show_merspectrogram(waveform, sample_rate):
     plt.imsave(f'test/spectrogram_img.png', mel_spectrogram.log2()[0,:,:].numpy(), cmap='gray')
 
 
+def show_mfcc(waveform,sample_rate):
+    mfcc_spectrogram = torchaudio.transforms.MFCC(sample_rate= sample_rate)(waveform)
+    print("Shape of spectrogram: {}".format(mfcc_spectrogram.size()))
+
+    plt.figure()
+    fig1 = plt.gcf()
+    plt.imshow(mfcc_spectrogram.log2()[0,:,:].numpy(), cmap='gray')
+    
+    plt.figure()
+    plt.plot(mfcc_spectrogram.log2()[0,:,:].numpy())
+    plt.draw()
+
+show_mfcc(no_waveform, no_sample_rate)
