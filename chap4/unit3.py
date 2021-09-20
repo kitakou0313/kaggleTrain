@@ -23,3 +23,7 @@ yes_no_dataset = datasets.ImageFolder(
 
 print(yes_no_dataset)
 print(yes_no_dataset[5][0].size())
+
+train_size = int(0.8 * len(yes_no_dataset))
+test_size = len(yes_no_dataset) - train_size
+yes_no_train_dataset, yes_no_test_dataset = torch.utils.data.random_split(yes_no_dataset, [train_size, test_size])
