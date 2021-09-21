@@ -27,3 +27,17 @@ print(yes_no_dataset[5][0].size())
 train_size = int(0.8 * len(yes_no_dataset))
 test_size = len(yes_no_dataset) - train_size
 yes_no_train_dataset, yes_no_test_dataset = torch.utils.data.random_split(yes_no_dataset, [train_size, test_size])
+
+train_dataloader = torch.utils.data.DataLoader(
+    yes_no_train_dataset,
+    batch_size=15,
+    num_workers=2,
+    shuffle=True
+)
+
+test_dataloader = torch.utils.data.DataLoader(
+    yes_no_test_dataset,
+    batch_size=15,
+    num_workers=2,
+    shuffle=True
+)
