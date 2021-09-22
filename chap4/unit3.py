@@ -1,3 +1,4 @@
+import enum
 from torch.utils import data
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
@@ -73,5 +74,40 @@ class CNNet(nn.Module):
         x = F.dropout(x, training=self.training)
         x = F.relu(self.fc2(x))
         return F.log_softmax(x,dim=1)
-
 model = CNNet().to(device)
+
+cost = torch.nn.CrossEntropyLoss()
+learning_rate = 0.0001
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+def train(dataloader:DataLoader, model:CNNet, loss, optimizer:torch.optim.Adam):
+    model.train()
+    size = len(dataloader.dataset)
+
+    for batch, (X,Y) in enumerate(dataloader):
+        X,Y = X.to(device), Y.to(device)
+        optimizer.zero_grad()
+        pred = model(X)
+        loss = cost(pred, Y)
+        loss.backward()
+        optimizer.step()
+
+        if batch % 100 == 0:
+            loss, current = loss.item(), batch * len(X)
+
+def test(dataloader:DataLoader,model:CNNet):
+    size = len(dataloader.dataset)
+    model.eval()
+    test_loss, corrent = 0,0
+
+    with torch.no_grad():
+        for batch, (X,Y) in enumerate(dataloader):
+            X, Y = X.to(device), Y.to(device)
+            pred = model(X)
+            test_loss += cost(pred, Y).item()
+            corrent += (pred.argmax(1)==Y).type(torch.float).sum().item()
+    
+    test_loss /= size
+    corrent /= size
+
+    
