@@ -1,4 +1,5 @@
 import enum
+from typing import Optional
 from torch.utils import data
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
@@ -110,4 +111,12 @@ def test(dataloader:DataLoader,model:CNNet):
     test_loss /= size
     corrent /= size
 
+epoch = 15
+
+for t in range(epoch):
+
+    train(train_dataloader, model, cost, optimizer)
+    test(test_dataloader, model)
+
+print("Done!")
     
